@@ -1,0 +1,233 @@
+/* Week2.css — 只做极少量补充；视觉仍由 Week1.css 主导 */
+
+/* Playground 外框与工具条 */
+.playground{
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    background:var(--panel);
+    margin-top:12px;
+}
+.pg-bar{
+    display:flex; gap:8px; align-items:center; justify-content:space-between;
+    padding:10px 12px; border-bottom:1px solid var(--line);
+    background:color-mix(in srgb, var(--panel) 85%, var(--bg));
+    font-size:13px; color:var(--subtext);
+}
+.pg-title{ font-weight:700; color:var(--text); }
+.pg-actions{ display:flex; gap:8px; align-items:center; }
+.pg-btn{
+    padding:6px 10px; border:1px solid var(--line); border-radius:8px;
+    background:color-mix(in srgb, var(--panel) 92%, var(--bg));
+    cursor:pointer; user-select:none;
+}
+.pg-btn:hover{ border-color:color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.pg-btn.primary{
+    background:linear-gradient(to bottom, color-mix(in srgb, var(--accent) 86%, white 14%), var(--accent));
+    color:#fff; border-color:transparent;
+}
+
+/* 编辑区：左右两栏（代码区 / 预览） */
+.pg-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:0; }
+@media (max-width: 900px){ .pg-grid{ grid-template-columns: 1fr; } }
+.pg-edit{
+    border-right:1px solid var(--line);
+    display:grid; grid-template-rows: auto 1fr auto 1fr; /* HTML 标题 + 区域 + CSS 标题 + 区域 */
+    min-height: 320px;
+}
+.pg-edit header{
+    padding:8px 12px; font-size:12px; color:var(--subtext);
+    border-bottom:1px solid var(--line); background:color-mix(in srgb, var(--panel) 92%, var(--bg));
+}
+.pg-edit textarea{
+    width:100%; height:180px; padding:12px; border:none; outline:none; resize:vertical;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size:13px; line-height:1.55;
+    background:var(--code-bg); color:var(--code-fg);
+}
+.pg-preview{ min-height:320px; display:flex; flex-direction:column; }
+.pg-preview header{
+    padding:8px 12px; font-size:12px; color:var(--subtext);
+    border-bottom:1px solid var(--line); background:color-mix(in srgb, var(--panel) 92%, var(--bg));
+}
+.pg-frame{ flex:1; width:100%; border:0; background:#fff; }
+
+/* 任务与答案 */
+.tasks{ margin-top:10px; display:grid; gap:10px; }
+.task{
+    border:1px dashed var(--line); border-radius:10px; padding:10px 12px;
+    background:color-mix(in srgb, var(--panel) 92%, var(--bg));
+}
+.task-badge{
+    display:inline-block; margin-right:8px; padding:2px 8px;
+    border:1px solid var(--line); border-radius:999px; font-size:12px;
+    background:color-mix(in srgb, var(--panel) 80%, var(--bg));
+}
+.ans-bar{ margin-top:8px; }
+.ans-btn{
+    padding:6px 10px; border:1px solid var(--line); border-radius:8px;
+    background:color-mix(in srgb, var(--panel) 92%, var(--bg));
+    cursor:pointer;
+}
+.ans-btn:hover{ border-color:color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.ans-panel{
+    display:none;
+    margin-top:8px;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    background:color-mix(in srgb, var(--panel) 96%, var(--bg));
+    padding:8px 10px;
+}
+.ans-panel.open{ display:block; }
+.ans-panel pre{
+    margin: 0;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    padding: 10px;
+    overflow: auto;
+    font-size: 13px;
+}
+
+/* 自动完成菜单 */
+.ac-menu{
+    position: absolute;
+    z-index: 9999;
+    min-width: 220px;
+    max-height: 220px;
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    padding: 6px 0;
+}
+.ac-item{
+    padding: 6px 10px;
+    font-size: 13px;
+    display: flex; justify-content: space-between; gap: 8px;
+    cursor: pointer;
+}
+.ac-item:hover, .ac-item.is-active{
+    background: color-mix(in srgb, var(--panel) 90%, var(--bg));
+}
+.ac-meta{
+    color: var(--subtext);
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+}
+
+/* 让代码块在移动端更好滚动 */
+pre{ -webkit-overflow-scrolling: touch; }
+
+/* —— 顶栏最终修复：品牌永远一行，右侧链接两行 —— */
+
+/* 1) 容器：不用换行（避免品牌掉到第二行） */
+.topbar .nav{
+    display: flex;
+    align-items: flex-start;     /* 右侧两行与品牌顶对齐 */
+    justify-content: space-between;
+    flex-wrap: nowrap;           /* 关键：整条导航不换行 */
+    gap: 12px;
+}
+
+/* 2) 品牌：按内容宽度，不收缩，不换行 */
+.topbar .brand{
+    flex: 0 0 auto;              /* 不允许被挤压 */
+    white-space: nowrap;         /* 绝不换行 */
+    word-break: keep-all;        /* CJK 也不逐字断 */
+    line-height: 1.2;            /* 防止大行高看起来像两行 */
+}
+
+/* 3) 右侧区域：允许收缩；内部自己换成两行 */
+.topbar .nav-right{
+    flex: 1 1 auto;              /* 占剩余空间，必要时收缩 */
+    min-width: 0;                /* 允许真正收缩，而不是把品牌挤换行 */
+    display: grid;
+    grid-template-columns: 1fr auto; /* 链接区 + 主题按钮 */
+    column-gap: 12px;
+    align-items: start;
+}
+
+/* 4) 链接区：开启换行，并限制为两行的高度 */
+.topbar .nav-links{
+    display: flex;
+    flex-wrap: wrap;             /* 允许换行 */
+    column-gap: 18px;
+    row-gap: 6px;
+    --nav-row-h: 32px;
+    max-height: calc(var(--nav-row-h) * 2 + 6px); /* 恰好两行 */
+    overflow: hidden;            /* 避免第三行把页头拉高 */
+}
+
+/* 每个链接：不逐字断、不竖排 */
+.topbar .nav-links a{
+    white-space: nowrap;
+    word-break: keep-all;
+    writing-mode: horizontal-tb;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+/* 保留 Week1 的下划线动画 */
+.topbar .nav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    height:2px; width:0;
+    background:var(--accent);
+    transition: width .25s ease;
+    border-radius:2px;
+}
+.topbar .nav a:hover::after{ width:100%; }
+
+/* 小屏：按钮自动掉到第二行，不会遮住链接 */
+@media (max-width: 700px){
+    .topbar .nav-right{
+        grid-template-columns: 1fr;
+        row-gap: 8px;
+    }
+}
+/* —— 顶栏上下对齐优化：品牌与两行链接居中 —— */
+
+/* 整条导航：垂直居中 */
+.topbar .nav{
+    align-items: center;                /* 由 flex-start 改为 center */
+    padding: 14px 20px;                 /* 保持与 Week1 一致的上下内边距 */
+}
+
+/* 右侧区域：网格内元素也居中 */
+.topbar .nav-right{
+    align-items: center;                /* 让链接区和按钮同一垂直中线 */
+}
+
+/* 链接区：两行内容在可用高度里“整体居中” */
+.topbar .nav-links{
+    /* 两行的预期高度（行高约 28–32px，自行微调） */
+    --nav-row-h: 32px;
+
+    /* 固定两行高度，并把两行在这个高度内居中分布 */
+    min-height: calc(var(--nav-row-h) * 2 + 6px);
+    max-height: calc(var(--nav-row-h) * 2 + 6px);
+
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 18px;
+    row-gap: 6px;
+    align-content: center;              /* 关键：让两行在交叉轴居中 */
+}
+
+/* 品牌：保持单行不换且和中线对齐 */
+.topbar .brand{
+    flex: 0 0 auto;
+    white-space: nowrap;
+    line-height: 1.2;                   /* 防止看起来像两行 */
+}
+
+/* 主题按钮：在两行高度的中线处 */
+#themeToggle{
+    align-self: center;                 /* 防止被顶到上缘 */
+}

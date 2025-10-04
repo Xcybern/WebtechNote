@@ -1,0 +1,533 @@
+/*
+===========================================================
+📘 Week1.css — CS5063 Week 1
+亮/暗主题 + 干净苹果风设计（保持原样式）
+===========================================================
+*/
+
+/* ===== 🎨 基础配色变量（默认亮色） ===== */
+:root {
+    --bg:#fbfbfd;            /* 页面整体背景 */
+    --panel:#ffffff;         /* 卡片面板背景 */
+    --text:#111114;          /* 主文字颜色 */
+    --subtext:#6b7280;       /* 次文字颜色 */
+    --line:#e5e7eb;          /* 分隔线 */
+    --accent:#0a84ff;        /* 强调色（蓝） */
+    --shadow:0 10px 30px rgba(0,0,0,.06); /* 柔和阴影 */
+    --radius:18px;           /* 统一圆角 */
+
+    /* 💡 亮色主题下的代码/演示区修复 */
+    --code-bg:#f6f8fa;
+    --code-fg:#0b1220;
+    --demo-bg:#f8fafc;
+
+    /* 提示框配色 */
+    --tooltip-bg:#111114;
+    --tooltip-fg:#ffffff;
+    color-scheme: light;
+}
+
+/* ===== 🕶 系统偏好暗色模式（自动切换） ===== */
+@media (prefers-color-scheme: dark){
+    :root{
+        --bg:#0b0b0c;
+        --panel:#151517;
+        --text:#f5f5f7;
+        --subtext:#9aa0a6;
+        --line:#2a2b2f;
+        --accent:#0a84ff;
+        --shadow:0 10px 30px rgba(0,0,0,.45);
+        --code-bg:#0b1220;
+        --code-fg:#dbeafe;
+        --demo-bg:#0f1115;
+        --tooltip-bg:#f5f5f7;
+        --tooltip-fg:#111114;
+        color-scheme: dark;
+    }
+}
+
+/* ===== 🌗 手动覆盖（通过 JS 设置 data-theme） ===== */
+:root[data-theme="light"]{
+    --bg:#fbfbfd; --panel:#ffffff; --text:#111114; --subtext:#6b7280; --line:#e5e7eb;
+    --accent:#0a84ff; --shadow:0 10px 30px rgba(0,0,0,.06);
+    --code-bg:#f6f8fa; --code-fg:#0b1220; --demo-bg:#f8fafc;
+    --tooltip-bg:#111114; --tooltip-fg:#ffffff;
+    color-scheme: light;
+}
+:root[data-theme="dark"]{
+    --bg:#0b0b0c; --panel:#151517; --text:#f5f5f7; --subtext:#9aa0a6; --line:#2a2b2f;
+    --accent:#0a84ff; --shadow:0 10px 30px rgba(0,0,0,.45);
+    --code-bg:#0b1220; --code-fg:#dbeafe; --demo-bg:#0f1115;
+    --tooltip-bg:#f5f5f7; --tooltip-fg:#111114;
+    color-scheme: dark;
+}
+
+/* ===== 🧱 页面基本设置 ===== */
+html,body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.container{
+    max-width:1100px;
+    margin:100px auto 80px;
+    padding:0 20px;
+}
+
+/* ===== 🧭 顶部导航栏 ===== */
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter:saturate(180%) blur(12px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+    border-bottom:1px solid var(--line);
+}
+.nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    max-width:1100px;
+    margin:0 auto;
+    padding:14px 20px;
+}
+.brand{
+    font-weight:700;
+    letter-spacing:.2px;
+}
+.nav a{
+    text-decoration:none;
+    color:var(--text);
+    margin-left:18px;
+    position:relative;
+    padding:6px 4px;
+}
+.nav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    height:2px; width:0;
+    background:var(--accent);
+    transition:width .25s ease;
+    border-radius:2px;
+}
+.nav a:hover::after{ width:100%; }
+.nav-right{ display:flex; align-items:center; gap:12px; }
+
+/* ===== 🔘 按钮样式 ===== */
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:linear-gradient(to bottom, color-mix(in srgb, var(--panel) 94%, white 6%), var(--panel));
+    cursor:pointer;
+    user-select:none;
+    text-decoration:none;
+    color:var(--text);
+    box-shadow:var(--shadow);
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.btn:hover{
+    transform:translateY(-1px);
+    border-color:color-mix(in srgb, var(--accent) 45%, var(--line));
+    box-shadow:0 16px 38px rgba(0,0,0,.08);
+}
+.btn.primary{
+    background:linear-gradient(to bottom, color-mix(in srgb, var(--accent) 86%, white 14%), var(--accent));
+    color:#fff;
+    border-color:transparent;
+}
+.btn.primary:hover{
+    transform:translateY(-1px) scale(1.01);
+    box-shadow:0 18px 44px rgba(10,132,255,.25);
+}
+#themeToggle .icon{ font-size:16px; line-height:1; }
+#themeToggle .label{ font-size:13px; opacity:.85; }
+
+/* ===== 🏠 Hero 区（标题部分） ===== */
+.hero{
+    display:flex;
+    gap:22px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+}
+.hero h1{ font-size: clamp(28px, 4vw, 40px); margin:0 0 8px; }
+.hero p{ margin:0; color:var(--subtext); }
+/* ============ Stack 双列视觉 ============ */
+.stack-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+@media (max-width:900px){
+    .stack-grid{ grid-template-columns:1fr; }
+}
+
+.stack-box{
+    background: var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    box-shadow: var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    min-height: 280px; /* 保持两列高度体感一致 */
+}
+
+/* 小眉标题 */
+.eyebrow{
+    font-size:12px; letter-spacing:.3px;
+    color:var(--subtext);
+    text-transform:uppercase;
+}
+
+/* 主标题 */
+.stack-title{
+    margin:0; font-size:18px;
+}
+
+/* 三层积木（HTML/CSS/JS） */
+.layers{
+    display:grid; gap:8px;
+}
+.layer{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 12px; border:1px dashed var(--line);
+    border-radius:10px; background: color-mix(in srgb, var(--panel) 86%, var(--bg));
+}
+.layer .dot{
+    width:22px; height:22px; border-radius:999px;
+    display:inline-grid; place-items:center;
+    background: color-mix(in srgb, var(--accent) 18%, var(--panel));
+    color: var(--text); font-size:12px;
+}
+
+/* 三块功能区（后端） */
+.blocks{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+}
+@media (max-width:520px){
+    .blocks{ grid-template-columns:1fr; }
+}
+.block{
+    border:1px solid var(--line); border-radius:10px; padding:12px;
+    background: color-mix(in srgb, var(--panel) 86%, var(--bg));
+}
+.block-title{ font-weight:600; }
+.block-sub{ font-size:12px; color:var(--subtext); margin-top:4px; }
+
+/* 要点列表 */
+.points{
+    margin:0; padding-left:18px; font-size:14px;
+}
+.points li{ margin:6px 0; }
+
+/* 小标签/芯片 */
+.chip{
+    display:inline-block; margin-left:8px; padding:2px 8px;
+    border:1px solid var(--line); border-radius:999px; font-size:12px;
+    background: color-mix(in srgb, var(--panel) 80%, var(--bg));
+}
+
+/* I/O 标注（发请求 / 回响应） */
+.io{
+    margin-top:auto; /* 固定在盒子底部，避免堆叠过高 */
+    font-size:13px; color:var(--subtext);
+}
+.io-out::before{
+    content:"📤 "; opacity:.9;
+}
+.io-in::before{
+    content:"📥 "; opacity:.9;
+}
+/* ============ 资源寻址：地址组件条 ============ */
+.addr-row{
+    display:flex; flex-wrap:wrap; gap:8px;
+}
+.addr-piece{
+    display:flex; align-items:center; gap:6px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background: color-mix(in srgb, var(--panel) 86%, var(--bg));
+}
+.ap-key{
+    font-size:12px; color:var(--subtext);
+    padding:2px 6px; border:1px solid var(--line);
+    border-radius:999px; background: color-mix(in srgb, var(--panel) 80%, var(--bg));
+    text-transform: lowercase;
+}
+.ap-val{ font-weight:600; }
+
+/* ============ 资源寻址：DNS/IP 模块 ============ */
+.addr-blocks{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+}
+@media (max-width:700px){
+    .addr-blocks{ grid-template-columns:1fr; }
+}
+.addr-block{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px;
+    background: color-mix(in srgb, var(--panel) 86%, var(--bg));
+}
+.addr-title{ font-weight:700; }
+.addr-sub{ font-size:12px; color:var(--subtext); margin-top:4px; display:flex; gap:6px; flex-wrap:wrap; }
+
+/* ============ 资源寻址：流程列表 ============ */
+.flow{
+    margin:8px 0 0 18px;
+    padding:0;
+}
+.flow li{ margin:6px 0; }
+/* 地址实例卡片 */
+.addr-card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background: color-mix(in srgb, var(--panel) 92%, var(--bg));
+    padding:12px; margin-top:10px;
+}
+.addr-line{
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+}
+.al-key{
+    font-size:12px; color:var(--subtext);
+    padding:2px 6px; border:1px solid var(--line); border-radius:999px;
+    background: color-mix(in srgb, var(--panel) 85%, var(--bg));
+}
+.al-val{
+    font-weight:600; word-break: break-all;
+}
+.addr-explain{
+    display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;
+    font-size:12px; color:var(--subtext);
+}
+.addr-explain span{
+    padding:2px 8px; border:1px dashed var(--line); border-radius:999px;
+}
+
+/* ===== 📦 卡片容器样式 ===== */
+section{ margin:30px 0 22px; }
+.card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    padding:22px;
+}
+.card h2{ font-size: clamp(20px, 3vw, 26px); margin:0 0 16px; }
+.card:hover{ border-color: color-mix(in srgb, var(--accent) 25%, var(--line)); }
+.tag{
+    padding:2px 8px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:color-mix(in srgb, var(--panel) 80%, var(--bg));
+    font-size:12px;
+    color:var(--subtext);
+}
+.muted{ color:var(--subtext); }
+
+/* ===== 💡 代码与演示区双列布局 ===== */
+.grid{ display:grid; grid-template-columns:1.2fr 1fr; gap:16px; }
+@media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+.code,.demo{
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid var(--line);
+}
+.code header,.demo header{
+    padding:10px 14px;
+    font-size:12px;
+    letter-spacing:.2px;
+    color:var(--subtext);
+    border-bottom:1px solid var(--line);
+    background:color-mix(in srgb, var(--panel) 85%, var(--bg));
+}
+pre{
+    margin:0;
+    padding:16px;
+    overflow:auto;
+    font-size:13px;
+    line-height:1.5;
+    background:var(--code-bg);
+    color:var(--code-fg);
+    tab-size:2;
+}
+.demo .preview{ background:var(--demo-bg); padding:16px; }
+
+/* ===== 🧩 sandbox（隔离示例样式） ===== */
+.sandbox *{ all: revert; font-family: system-ui, -apple-system, sans-serif; }
+.sandbox{
+    padding:12px;
+    border-radius:10px;
+    background:#fff;
+    color:#111;
+    border:1px solid #eee;
+}
+
+/* ===== 💬 提示气泡与辅助文字 ===== */
+.hint{
+    position:relative;
+    cursor:help;
+    border-bottom:1px dotted color-mix(in srgb, var(--text) 60%, transparent);
+}
+.hint::after{
+    content:attr(data-tip);
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%) translateY(8px);
+    white-space:nowrap;
+    background:var(--tooltip-bg);
+    color:var(--tooltip-fg);
+    padding:8px 10px;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.2;
+    box-shadow:var(--shadow);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .15s ease, transform .15s ease;
+    z-index:10;
+    border:1px solid var(--line);
+}
+.hint:hover::after{ opacity:1; transform:translateX(-50%) translateY(4px); }
+
+.pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:10px 0;
+}
+.kbd{
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background:color-mix(in srgb, var(--panel) 85%, var(--bg));
+    padding:2px 6px;
+    border-radius:6px;
+    border:1px solid var(--line);
+}
+
+/* ===== 📎 页脚 ===== */
+footer{
+    margin:40px 0 80px;
+    color:var(--subtext);
+    text-align:center;
+}
+
+/* ===== HTTP 组件：行、胶囊、盒子 ===== */
+.http-row{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:flex-start;
+}
+.http-pill{
+    display:flex; gap:8px; align-items:center;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background: color-mix(in srgb, var(--panel) 92%, var(--bg));
+}
+.hp-key{
+    font-size:12px; color:var(--subtext);
+    padding:2px 6px; border:1px solid var(--line); border-radius:999px;
+    background: color-mix(in srgb, var(--panel) 85%, var(--bg));
+}
+.hp-val{ display:flex; gap:6px; flex-wrap:wrap; }
+
+.http-box{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background: color-mix(in srgb, var(--panel) 90%, var(--bg));
+    padding:10px 12px;
+}
+.http-title{ font-weight:700; margin-bottom:6px; }
+.http-list{ margin:0; padding-left:18px; }
+.http-list li{ margin:6px 0; }
+.http-body-sample{ display:flex; gap:8px; flex-wrap:wrap; }
+
+/* 中间的桥接说明（HTTPS / TCP） */
+.http-bridge{
+    margin-top:12px;
+    text-align:center;
+    padding:10px 12px;
+    border:1px dashed var(--line);
+    border-radius:12px;
+    background: color-mix(in srgb, var(--panel) 86%, var(--bg));
+    font-size:14px;
+}
+/* 资源清单样式：保持简洁、易读 */
+.res-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+}
+.res-list li{
+    display: grid;
+    gap: 6px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    background: color-mix(in srgb, var(--panel) 92%, var(--bg));
+}
+.res-name{
+    font-weight: 700;
+    font-size: 15px;
+}
+.res-list .btn{
+    width: fit-content;
+    padding: 8px 12px;
+}
+/* 让浏览器在锚点跳转时，自动预留顶部导航的高度 */
+:root{
+    --header-h: 64px;         /* 兜底值：真实值会由 JS 动态写入 */
+}
+
+/* 平滑滚动 + 预留粘顶导航的内边距，避免标题被挡住 */
+html{
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+/* 可选：当前激活的导航链接样式（更直观） */
+.nav a.active{
+    color: var(--accent);
+}
+.nav a.active::after{
+    width: 100%;
+}
+
+/* Module Assessment 列表样式 */
+.assess-list{
+    margin:0; padding:0; list-style:none;
+    display:grid; gap:12px;
+}
+.assess-list li{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background: color-mix(in srgb, var(--panel) 92%, var(--bg));
+    padding:12px;
+}
+.assess-title{
+    font-weight:700;
+    display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+}
+.assess-desc{
+    margin-top:6px; color:var(--subtext);
+}
+/* 让 iframe 预览有合适的尺寸并自适应内容 */
+.raw-frame{
+    width: 100%;
+    height: 220px;            /* 可按需调高 */
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;         /* 让素页面是浏览器默认白底 */
+}
+:root[data-theme="dark"] .raw-frame{ background:#fff; } /* 暗色主题下也保持白底 */

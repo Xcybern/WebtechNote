@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>CS5063 Week 1 — Introduction & HTML 笔记</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CS5063 Web Technologies - Week 1 Introduction & HTML 笔记（亮/黑主题切换）" />
+    <link rel="stylesheet" href="/Week1.css">
+</head>
+<body id="top">
+<!-- ===== Topbar with Theme Toggle ===== -->
+<div class="topbar">
+    <nav class="nav" aria-label="主导航">
+        <div class="brand">CS5063 • Week 1</div>
+        <div class="nav-right">
+            <a href="#stack">Web 基础</a>
+            <a href="#addressing">URI/URL</a>
+            <a href="#http">HTTP</a>
+            <a href="#html-syntax">HTML 语法</a>
+            <a href="#document">文档结构</a>
+            <a href="#semantics">语义元素</a>
+            <a href="#tools">Useful Resources</a>
+            <button id="themeToggle" class="btn" type="button" aria-pressed="false" title="切换主题">
+                <span class="icon" aria-hidden="true">☀️</span><span class="label">浅色</span>
+            </button>
+        </div>
+    </nav>
+</div>
+
+<main class="container">
+    <div class="hero">
+        <div>
+            <h1>Introduction & HTML — 笔记</h1>
+            <p>By Xunjie Zhou • xz97@st-andrews.ac.uk</p>
+        </div>
+        <div>
+            <a class="btn primary" href="#html-syntax">开始学习</a>
+            <a class="btn" href="#top">Web Tech is EZ ↑</a>
+        </div>
+    </div>
+
+    <!-- 0. 概览 -->
+    <section id="overview" class="card">
+        <h2>CS5063课程路线 <span class="tag">Week 1</span></h2>
+        <p class="muted">路线：<strong>HTML</strong> → <strong>CSS</strong> → <strong>JavaScript</strong> → 框架（React/P5.js）→ Node.js Web APIs。考核覆盖讲义、课堂演示、练习与指定阅读。</p>
+
+    </section>
+    <section id="Moudle Assessment" class="card" aria-labelledby="overview-title">
+        <h2 id="overview-title">Module Assessment</h2>
+
+        <ul class="assess-list" role="list">
+            <li>
+                <div class="assess-title">Coursework 1: Web Page <span class="chip">30% module grade</span></div>
+                <div class="assess-desc">Develop an interactive webpage using HTML, CSS and JavaScript.</div>
+            </li>
+            <li>
+                <div class="assess-title">Coursework 2: Web App <span class="chip">30% module grade</span></div>
+                <div class="assess-desc">Develop a more advanced web application using HTML, CSS, JavaScript and a Framework (optional).</div>
+            </li>
+            <li>
+                <div class="assess-title">Coursework Marking</div>
+                <div class="assess-desc">20-point scale for coursework marks; marking criteria in coursework specifications (functionality, code quality, report, …).</div>
+            </li>
+            <li>
+                <div class="assess-title">Exam <span class="chip">40% module grade</span></div>
+                <div class="assess-desc">During the December exam diet.</div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 1. 技术栈 -->
+    <section id="stack" class="card" aria-labelledby="stack-title">
+        <h2 id="stack-title">Web 技术栈与客户端 / 服务器模型</h2>
+
+        <!-- 双列：左=客户端（浏览器），右=服务器（后端） -->
+        <div class="stack-grid" role="group" aria-label="客户端与服务器的对比展示">
+            <!-- 左：客户端（浏览器） -->
+            <div class="stack-box">
+                <div class="eyebrow">前端 · Browser</div>
+                <h3 class="stack-title">客户端（你看到和点到的）</h3>
+
+                <!-- 视觉化：三层积木 -->
+                <div class="layers">
+                    <div class="layer">
+                        <span class="dot">①</span>
+                        <strong>HTML</strong> · 结构骨架
+                        <span class="chip">标题/段落/列表</span>
+                    </div>
+                    <div class="layer">
+                        <span class="dot">②</span>
+                        <strong>CSS</strong> · 外观样式
+                        <span class="chip">颜色/布局/动画</span>
+                    </div>
+                    <div class="layer">
+                        <span class="dot">③</span>
+                        <strong>JavaScript</strong> · 交互行为
+                        <span class="chip">按钮点击/表单校验</span>
+                    </div>
+                </div>
+
+                <!-- 简明要点 -->
+                <ul class="points">
+                    <li>运行在 <b>浏览器沙箱</b> 内，<span class="muted">安全隔离，不直接碰数据库/硬盘</span></li>
+                    <li>通过 <b>HTTP</b> 向服务器 <b>发出请求</b>，拿回 <b>HTML/CSS/JS 或 JSON</b></li>
+                    <li>能在本地存 <code>localStorage</code> / <code>cookie</code>，<span class="muted">记住你的选择</span></li>
+                </ul>
+
+                <!-- 标注：从客户端 ➜ 发请求 -->
+                <div class="io io-out" aria-hidden="true">发出请求 ➜</div>
+            </div>
+
+            <!-- 右：服务器（后端） -->
+            <div class="stack-box">
+                <div class="eyebrow">后端 · Server</div>
+                <h3 class="stack-title">服务器（负责处理与“做决定”）</h3>
+
+                <!-- 视觉化：三块功能区 -->
+                <div class="blocks">
+                    <div class="block">
+                        <div class="block-title">Web 程序</div>
+                        <div class="block-sub">Node / Python / Java / Go…</div>
+                    </div>
+                    <div class="block">
+                        <div class="block-title">数据层</div>
+                        <div class="block-sub">数据库 / 缓存 / 文件</div>
+                    </div>
+                    <div class="block">
+                        <div class="block-title">静态资源</div>
+                        <div class="block-sub">HTML / CSS / JS / 图片</div>
+                    </div>
+                </div>
+
+                <!-- 简明要点 -->
+                <ul class="points">
+                    <li>接收请求 → <b>鉴权/业务逻辑/读写数据</b> → 返回 <b>响应</b></li>
+                    <li>常见返回：<b>网页内容</b> 或 <b>JSON 接口</b>（给前端渲染）</li>
+                    <li>会做 <span class="chip">安全校验</span>、<span class="chip">速率限制</span>、<span class="chip">日志监控</span></li>
+                </ul>
+
+                <!-- 标注：从服务器 ⬅ 返回响应 -->
+                <div class="io io-in" aria-hidden="true">⬅ 返回响应</div>
+            </div>
+        </div>
+
+        <p class="muted" style="margin-top: 12px;">
+            一句话理解：<b>浏览器</b> 负责显示与交互，<b>服务器</b> 负责处理与存储，它们用 <b>HTTP</b> 说话。
+        </p>
+    </section>
+
+
+    <section id="addressing" class="card" aria-labelledby="addr-title">
+        <h2 id="addr-title">资源寻址（URI / URL / URN）</h2>
+
+        <div class="stack-grid" role="group" aria-label="资源地址的组成与解析流程">
+            <!-- 左：地址长什么样（人类可读） -->
+            <div class="stack-box">
+                <div class="eyebrow">地址本身 · Human-readable</div>
+                <h3 class="stack-title">URL 是“找东西的完整地址”</h3>
+
+                <!-- 直观组件条 -->
+                <div class="addr-row" aria-label="URL 组成">
+                    <div class="addr-piece"><span class="ap-key">scheme</span><span class="ap-val">https://</span></div>
+                    <div class="addr-piece"><span class="ap-key">host</span><span class="ap-val">www.example.com</span></div>
+                    <div class="addr-piece"><span class="ap-key">path</span><span class="ap-val">/docs/index.html</span></div>
+                    <div class="addr-piece"><span class="ap-key">query</span><span class="ap-val">?q=html</span></div>
+                    <div class="addr-piece"><span class="ap-key">fragment</span><span class="ap-val">#top</span></div>
+                </div>
+
+                <!-- ✅ 地址实例卡片（可一眼看懂） -->
+                <div class="addr-card" aria-label="地址实例">
+                    <div class="addr-line">
+                        <span class="al-key">示例 URL</span>
+                        <span class="al-val">https://cs.st-andrews.ac.uk/courses/cs5063?week=1#html</span>
+                    </div>
+                    <div class="addr-explain">
+                        <span><b>scheme</b>=https</span>
+                        <span><b>host</b>=cs.st-andrews.ac.uk</span>
+                        <span><b>path</b>=/courses/cs5063</span>
+                        <span><b>query</b>=?week=1</span>
+                        <span><b>fragment</b>=#html</span>
+                    </div>
+                </div>
+
+                <ul class="points">
+                    <li><b>URI</b> 是“标识符”的总称；<b>URL</b> 能定位资源；<b>URN</b> 更像“不变的名字”。</li>
+                    <li><b>scheme</b> 决定怎么访问（如 <span class="chip">https</span>、<span class="chip">ftp</span>）。</li>
+                    <li><b>host</b> 是域名；<b>path</b> 是站内路径；<b>query</b> 是参数；<b>fragment</b> 跳到页面某处。</li>
+                </ul>
+            </div>
+
+            <!-- 右：它们如何被找到（机器可路由） -->
+            <div class="stack-box">
+                <div class="eyebrow">解析与路由 · Machine-routable</div>
+                <h3 class="stack-title">DNS 与 IP：把“文字地址”变成“数字地址”</h3>
+
+                <!-- DNS/IP 模块化图 -->
+                <div class="addr-blocks" aria-label="DNS 到 IP 的解析模块">
+                    <div class="addr-block">
+                        <div class="addr-title">DNS 解析器</div>
+                        <div class="addr-sub">浏览器/操作系统先问这里</div>
+                    </div>
+                    <div class="addr-block">
+                        <div class="addr-title">DNS 服务器</div>
+                        <div class="addr-sub">从根域 → 顶级域（.com） → 权威服务器逐级查询</div>
+                    </div>
+                    <div class="addr-block">
+                        <div class="addr-title">IP 地址</div>
+                        <div class="addr-sub">
+                            <span class="chip">IPv4 例：93.184.216.34</span>
+                            <span class="chip hint" data-tip="128 位地址，更大地址空间、简化路由、内置多播等">IPv6 例：2606:2800:220::</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 协同流程（极简） -->
+                <ol class="flow" aria-label="解析流程">
+                    <li>浏览器拿到 URL → 先用 <b class="hint" data-tip="Domain Name System：把域名变成 IP 的“电话簿”">DNS</b> 把 <b>域名</b> 解析为 <b>IP</b>。</li>
+                    <li>拿到 IP → 用 <b class="hint" data-tip="Transmission Control Protocol：面向连接、可靠传输，常见端口 HTTPS=443">TCP</b>/<b class="hint" data-tip="User Datagram Protocol：无连接、尽力而为，常用于实时场景">UDP</b> 发包（常见：HTTPS 走 TCP:443）。</li>
+                    <li>服务器收到 → 返回内容（HTML/CSS/JS 或 JSON）。</li>
+                </ol>
+
+                <ul class="points">
+                    <li><b>IPv4</b> 32 位（地址较短、资源紧张）；<b class="hint" data-tip="由 IETF 在 1990s 中期提出：1995 年 RFC 1883 首次发布，1998 年 RFC 2460 标准化，2017 年 RFC 8200 更新为当前标准。">IPv6</b> 128 位（地址巨多、改进路由与扩展性）。</li>
+                    <li>同一域名可同时有 <b>A</b>（IPv4）和 <b>AAAA</b>（IPv6）记录；系统会优先选择能连通、策略更优的那个。</li>
+                </ul>
+
+                <p class="muted" style="margin:8px 0 0;">
+                    说明：<b>IPv6 并不是某个国家发明</b>；是由 <b>IETF（互联网工程任务组）</b> 在 1990 年代中期制定的新一代互联网协议，
+                    1995 年首次发布（RFC 1883），1998 年标准化（RFC 2460），2017 年更新为现行标准（RFC 8200）。
+                </p>
+            </div>
+        </div>
+
+        <p class="muted" style="margin-top:12px;">
+            记忆法：<b>URL</b> 像门牌地址，<b>DNS</b> 像电话簿，<b>IP</b> 像电话号码；先查电话簿（DNS），拿到号码（IP），再打电话（网络请求）。
+        </p>
+    </section>
+
+
+    <!-- 3. HTTP -->
+    <section id="http" class="card" aria-labelledby="http-title">
+        <h2 id="http-title">HTTP：请求与响应（浏览器怎么和服务器说话）</h2>
+
+        <div class="stack-grid" role="group" aria-label="HTTP 请求与响应双视图">
+            <!-- 左：请求（浏览器 ➜ 服务器） -->
+            <div class="stack-box">
+                <div class="eyebrow">Request · 我想要点啥</div>
+                <h3 class="stack-title">HTTP 请求（从浏览器发出去）</h3>
+
+                <!-- 方法 & 目标 -->
+                <div class="http-row">
+                    <div class="http-pill">
+                        <span class="hp-key">方法</span>
+                        <span class="hp-val">
+            <span class="chip hint" data-tip="获取数据；不会修改服务器数据（幂等 & 安全）">GET</span>
+            <span class="chip hint" data-tip="提交数据，比如表单、JSON；可能会创建或修改资源">POST</span>
+            <span class="chip hint" data-tip="整体替换资源（幂等）">PUT</span>
+            <span class="chip hint" data-tip="删除资源（幂等）">DELETE</span>
+          </span>
+                    </div>
+                    <div class="http-pill">
+                        <span class="hp-key">目标</span>
+                        <span class="hp-val">URL（/users/123?tab=profile）</span>
+                    </div>
+                </div>
+
+                <!-- 头信息 & 可选消息体 -->
+                <div class="http-box">
+                    <div class="http-title">请求头（Headers）</div>
+                    <ul class="http-list">
+                        <li><span class="kbd">Host</span>：域名（例：example.com）</li>
+                        <li><span class="kbd">Accept</span>：我能接收的类型（HTML / JSON / 图片）</li>
+                        <li><span class="kbd">Authorization</span>：登录凭证 / 令牌</li>
+                        <li><span class="kbd">Cookie</span>：会话信息</li>
+                    </ul>
+                </div>
+
+                <div class="http-box">
+                    <div class="http-title">请求体（Body）<span class="muted">（可选）</span></div>
+                    <div class="http-body-sample">
+                        例如：<span class="chip">JSON</span>、<span class="chip">表单</span>、<span class="chip">文件</span>
+                    </div>
+                </div>
+
+                <div class="io io-out" aria-hidden="true">发出请求 ➜</div>
+            </div>
+
+            <!-- 右：响应（服务器 ➜ 浏览器） -->
+            <div class="stack-box">
+                <div class="eyebrow">Response · 给你结果</div>
+                <h3 class="stack-title">HTTP 响应（服务器回过来）</h3>
+
+                <!-- 状态码 & 类型 -->
+                <div class="http-row">
+                    <div class="http-pill">
+                        <span class="hp-key">状态码</span>
+                        <span class="hp-val">
+            <span class="chip hint" data-tip="一切正常">200 OK</span>
+            <span class="chip hint" data-tip="需要登录或权限不足">401/403</span>
+            <span class="chip hint" data-tip="找不到资源（URL 或资源不存在）">404 Not Found</span>
+            <span class="chip hint" data-tip="服务器挂了或出错">500 Server Error</span>
+            <span class="chip hint" data-tip="重定向到别处">301/302</span>
+          </span>
+                    </div>
+                    <div class="http-pill">
+                        <span class="hp-key">类型</span>
+                        <span class="hp-val">
+            <span class="chip">HTML</span>
+            <span class="chip">JSON</span>
+            <span class="chip">CSS / JS</span>
+            <span class="chip">图片</span>
+          </span>
+                    </div>
+                </div>
+
+                <!-- 头信息 & 消息体 -->
+                <div class="http-box">
+                    <div class="http-title">响应头（Headers）</div>
+                    <ul class="http-list">
+                        <li><span class="kbd">Content-Type</span>：内容类型（如 <span class="chip">text/html</span>、<span class="chip">application/json</span>）</li>
+                        <li><span class="kbd">Set-Cookie</span>：让浏览器保存会话信息</li>
+                        <li><span class="kbd">Cache-Control</span>：缓存策略</li>
+                        <li><span class="kbd">Location</span>：重定向目标（配合 301/302）</li>
+                    </ul>
+                </div>
+
+                <div class="http-box">
+                    <div class="http-title">响应体（Body）</div>
+                    <div class="http-body-sample">
+                        例如：<span class="chip">网页 HTML</span> 或 <span class="chip">JSON 数据</span>
+                    </div>
+                </div>
+
+                <div class="io io-in" aria-hidden="true">⬅ 返回响应</div>
+            </div>
+        </div>
+
+        <!-- 中间的小提示：HTTPS / 连接层 -->
+        <div class="http-bridge">
+            <span class="hint" data-tip="HTTP over TLS：在 TCP 之上加密，端口通常 443">HTTPS</span>
+            在 <span class="hint" data-tip="一种通信协议Transmission Control Protocol：保证顺序与可靠交付">TCP</span> 之上工作，
+            把 <b>请求</b> 和 <b>响应</b> 安全地送达两端。
+        </div>
+
+        <p class="muted" style="margin-top:8px;">
+            快速记忆：<b>浏览器</b> 提出诉求（请求），<b>服务器</b> 给出答案（响应）。请求里写“想干啥”和“我是谁”；响应里写“结果如何”和“给你的内容”。
+        </p>
+    </section>
+
+
+    <!-- 4. HTML 语法 -->
+    <section id="html-syntax" class="card">
+        <h2>HTML 语法：标签 / 属性 / 嵌套 / 注释</h2>
+        <div class="grid">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;p&gt;Some text in a &lt;em&gt;paragraph&lt;/em&gt; with &lt;strong&gt;strong&lt;/strong&gt; emphasis.&lt;/p&gt;
+&lt;p&gt;Line 1&lt;br&gt;Line 2&lt;/p&gt;
+&lt;!-- 这是开发注释，上线前建议清理 --&gt;</code></pre>
+            </div>
+            <div class="demo"><header>效果预览</header>
+                <div class="preview">
+                    <p>Some text in a <em>paragraph</em> with <strong>strong</strong> emphasis.</p>
+                    <p>Line 1<br>Line 2</p>
+                    <p class="muted">提示：元素必须合法嵌套，属性为 <span class="kbd">key="value"</span> 形式。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 文档结构 -->
+    <section id="document" class="card">
+        <h2>文档结构（Document Tree）</h2>
+        <div class="grid">
+            <div class="code"><header>源码（最小页面骨架）</header>
+                <pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;First Page&lt;/h1&gt;
+    &lt;p&gt;This is my first page.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+            <div class="demo"><header>效果预览（仅渲染 body 内容）</header>
+                <div class="preview">
+                    <div class="sandbox">
+                        <h1>First Page</h1>
+                        <p>This is my first page.</p>
+                    </div>
+                    <p class="muted" style="margin-top:10px;">
+                        <span class="hint" data-tip="缺失 DOCTYPE 会触发 Quirks Mode 兼容模式">DOCTYPE</span> 声明 HTML5；<span class="kbd">lang</span> 指定语言；
+                        <span class="kbd">&lt;head&gt;</span> 放元数据与外链；<span class="kbd">&lt;body&gt;</span> 放可见内容。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 语义元素 -->
+    <section id="semantics" class="card">
+        <h2>语义元素与常用标签</h2>
+
+        <h3 style="margin:8px 0 12px;">6.1 标题 Headings（h1–h6）</h3>
+        <div class="grid" style="margin-bottom:18px;">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;h1&gt;Top level heading&lt;/h1&gt;
+&lt;h2&gt;Section heading&lt;/h2&gt;
+&lt;h3&gt;Subsection heading&lt;/h3&gt;</code></pre></div>
+            <div class="demo"><header>效果</header>
+                <div class="preview sandbox">
+                    <h1>Top level heading</h1>
+                    <h2>Section heading</h2>
+                    <h3>Subsection heading</h3>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:8px 0 12px;">6.2 段落与强调（p / em / strong）</h3>
+        <div class="grid" style="margin-bottom:18px;">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;p&gt;这是 &lt;em&gt;强调&lt;/em&gt;，这是 &lt;strong&gt;强烈强调&lt;/strong&gt;。&lt;/p&gt;</code></pre></div>
+            <div class="demo"><header>效果</header>
+                <div class="preview sandbox">
+                    <p>这是 <em>强调</em>，这是 <strong>强烈强调</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:8px 0 12px;">6.3 列表（ol / ul / li）</h3>
+        <div class="grid" style="margin-bottom:18px;">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;h4&gt;Ordered&lt;/h4&gt;
+&lt;ol&gt;&lt;li&gt;First&lt;/li&gt;&lt;li&gt;Second&lt;/li&gt;&lt;/ol&gt;
+
+&lt;h4&gt;Unordered&lt;/h4&gt;
+&lt;ul&gt;&lt;li&gt;Alpha&lt;/li&gt;&lt;li&gt;Beta&lt;/li&gt;&lt;/ul&gt;</code></pre></div>
+            <div class="demo"><header>效果</header>
+                <div class="preview sandbox">
+                    <h4>Ordered</h4>
+                    <ol><li>First</li><li>Second</li></ol>
+                    <h4>Unordered</h4>
+                    <ul><li>Alpha</li><li>Beta</li></ul>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:8px 0 12px;">6.4 超链接（a href）与锚点</h3>
+        <div class="grid" style="margin-bottom:18px;">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;a href="#top"&gt;返回顶部&lt;/a&gt;
+&lt;a href="mailto:hello@example.com"&gt;联系我&lt;/a&gt;
+&lt;a href="https://developer.mozilla.org/" target="_blank"&gt;MDN&lt;/a&gt;</code></pre></div>
+            <div class="demo"><header>效果</header>
+                <div class="preview sandbox">
+                    <a href="#top">返回顶部</a> ·
+                    <a href="mailto:hello@example.com">联系我</a> ·
+                    <a href="https://developer.mozilla.org/" target="_blank" rel="noreferrer">MDN</a>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:8px 0 12px;">6.5 图片（img：src + alt）</h3>
+        <div class="grid" style="margin-bottom:18px;">
+            <div class="code"><header>源码（内联 SVG 占位）</header>
+                <pre><code>&lt;img
+  src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='240' height='140'&gt;&lt;rect width='100%' height='100%' fill='%23e5e7eb'/&gt;&lt;text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='sans-serif' font-size='16'&gt;Placeholder&lt;/text&gt;&lt;/svg&gt;"
+  alt="占位图像（示例）" /&gt;</code></pre></div>
+            <div class="demo"><header>效果</header>
+                <div class="preview sandbox">
+                    <img
+                            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='140'><rect width='100%' height='100%' fill='%23e5e7eb'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%2399a' font-family='sans-serif' font-size='16'>Placeholder</text></svg>"
+                            alt="占位图像（示例）" />
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:8px 0 12px;">6.6 表格（table / thead / tbody / th / td）</h3>
+        <div class="grid" style="margin-bottom:18px;">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;table&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Meaning&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;200&lt;/td&gt;&lt;td&gt;OK&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;404&lt;/td&gt;&lt;td&gt;Not Found&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div>
+            <div class="demo"><header>效果</header>
+                <div class="preview sandbox">
+                    <table border="1" cellpadding="6">
+                        <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+                        <tbody>
+                        <tr><td>200</td><td>OK</td></tr>
+                        <tr><td>404</td><td>Not Found</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:8px 0 12px;">6.7 表单（form / label / input / textarea / button）+ ARIA</h3>
+        <div class="grid">
+            <div class="code"><header>源码（含 aria-label 示例）</header>
+                <pre><code>&lt;form&gt;
+  &lt;label for="q"&gt;搜索&lt;/label&gt;
+  &lt;input id="q" name="q" placeholder="HTML" /&gt;
+  &lt;button type="submit" aria-label="提交搜索"&gt;搜索&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+            <div class="demo"><header>效果与交互</header>
+                <div class="preview sandbox">
+                    <form onsubmit="return false;">
+                        <label for="q">搜索</label>
+                        <input id="q" name="q" placeholder="HTML" />
+                        <button type="submit" aria-label="提交搜索">搜索</button>
+                    </form>
+                    <p class="muted" style="margin-top:8px;">按钮悬浮会有微动效（见页面样式按钮）。ARIA 可提升辅助技术可读性。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Favicon -->
+    <section class="card">
+        <h2>Favicon（站点小图标）</h2>
+        <div class="grid">
+            <div class="code"><header>源码</header>
+                <pre><code>&lt;link rel="icon" href="/favicon.ico"&gt;</code></pre></div>
+            <div class="demo"><header>说明</header>
+                <div class="preview">
+                    <p>Favicon 通常为 <span class="kbd">16×16</span>，显示在标签页/书签/地址栏等位置。</p>
+                    <p class="muted">生成方式可使用在线生成器，放置于根目录并在 <span class="kbd">&lt;head&gt;</span> 中引入。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 工具与验证 -->
+    <section id="tools" class="card" aria-labelledby="res-title">
+        <h2 id="res-title">Useful Resources for CS5063</h2>
+
+        <!-- 简洁资源列表：名称 + URL -->
+        <ul class="res-list" role="list">
+            <li>
+                <div class="res-name">W3Schools</div>
+                <a class="btn" href="https://www.w3schools.com/" target="_blank" rel="noreferrer">https://www.w3schools.com/</a>
+            </li>
+            <li>
+                <div class="res-name">MDN Web Docs</div>
+                <a class="btn" href="https://developer.mozilla.org/en-US/" target="_blank" rel="noreferrer">https://developer.mozilla.org/en-US/</a>
+            </li>
+            <li>
+                <div class="res-name">WHATWG HTML Living Standard</div>
+                <a class="btn" href="https://html.spec.whatwg.org/" target="_blank" rel="noreferrer">https://html.spec.whatwg.org/</a>
+            </li>
+            <li>
+                <div class="res-name">The W3C (CSS & Accessibility)</div>
+                <a class="btn" href="https://www.w3.org/" target="_blank" rel="noreferrer">https://www.w3.org/</a>
+            </li>
+            <li>
+                <div class="res-name">ECMAScript standard</div>
+                <a class="btn" href="https://tc39.es/ecma262/" target="_blank" rel="noreferrer">https://tc39.es/ecma262/</a>
+            </li>
+        </ul>
+
+        <p class="muted" style="margin-top:10px;">
+            提示：MDN 是学习与查找 API 的首选；WHATWG/W3C/ECMA 是“**权威规范**”（更正式，但阅读门槛稍高）。
+        </p>
+    </section>
+
+
+    <footer>
+        © CS5063 Week 1 — 这页仅为学习演示用途 By Xunjie<br>
+        <a class="btn" href="#top">回到顶部</a>
+    </footer>
+</main>
+
+<script src="/Week1.js"></script>
+</body>
+</html>

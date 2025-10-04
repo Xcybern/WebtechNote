@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>CS5063 Week 2 — CSS）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CS5063 Web Technologies - Week 2 CSS 入门与基础样式（亮/黑主题 + 内嵌编辑器 + 显示答案按钮）" />
+    <!-- 复用 Week1 风格 -->
+    <link rel="stylesheet" href="/Week1.css">
+    <!-- Week2 补充样式 -->
+    <link rel="stylesheet" href="/Week2.css">
+</head>
+<body id="top">
+<!-- 顶栏：与 Week1 完全一致 -->
+<div class="topbar">
+    <nav class="nav" aria-label="主导航">
+        <div class="brand">CS5063 • Week 2</div>
+
+        <!-- 新：把链接单独包在 .nav-links 里，按钮独立放右侧 -->
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#intro">什么是 CSS</a>
+                <a href="#howto">如何添加样式</a>
+                <a href="#syntax">语法</a>
+                <a href="#selectors">选择器</a>
+                <a href="#colors-units">颜色与单位</a>
+                <a href="#text-font">文字与字体</a>
+                <a href="#spacing">间距</a>
+                <a href="#border-bg">边框与背景</a>
+                <a href="#box-model">盒模型</a>
+                <a href="#display-position">显示与定位</a>
+                <a href="#flex">Flex</a>
+                <a href="#cascade">级联与优先级</a>
+                <a href="#inherit">继承</a>
+            </div>
+
+            <button id="themeToggle" class="btn" type="button" aria-pressed="false" title="切换主题">
+                <span class="icon" aria-hidden="true">☀️</span><span class="label">浅色</span>
+            </button>
+        </div>
+    </nav>
+</div>
+
+<main class="container">
+    <div class="hero">
+        <div>
+            <h1>Week 2 — CSS</h1>
+            <p>By <strong>Xunjie  </strong>Email: xz97@st-andrews.ac.uk</p>
+        </div>
+        <div>
+            <a class="btn primary" href="#intro">开始学习</a>
+            <a class="btn" href="#top">🎉</a>
+        </div>
+    </div>
+
+    <!-- 0. 什么是 CSS -->
+    <section id="intro" class="card">
+        <h2>什么是 CSS（Cascading Style Sheets）</h2>
+        <p>CSS 告诉浏览器：<strong>内容应该如何呈现</strong>（颜色、字体、间距、布局、动画…）。HTML 负责结构，CSS 负责外观，二者分离便于维护和复用。</p>
+
+        <!-- 编辑器：无样式 vs 有样式 -->
+        <div class="playground"
+             data-title="Intro: 无样式 vs 有样式"
+             data-init-html="&lt;h1&gt;Hello CSS&lt;/h1&gt;
+&lt;p&gt;样式让页面更美观、更易读。&lt;/p&gt;"
+             data-init-css="/* 只用命名色 */
+h1{ color: red; }
+p{ font-size:18px; line-height:1.8; background: lightgray; }">
+        </div>
+
+        <div class="tasks">
+            <div class="task">
+                <span class="task-badge">任务</span>
+                把标题改成 <b>purple</b>，。
+                <div class="ans-bar">
+                    <button class="ans-btn" data-ans-target="#ans-intro">显示答案</button>
+                </div>
+                <div class="ans-panel" id="ans-intro">
+<pre><code>h1 { color: purple; }
+p  { background: lightgray; }</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. 如何把 CSS 加到页面 -->
+    <section id="howto" class="card">
+        <h2>如何把 CSS 加到页面（外链 / 内嵌 / 行内）</h2>
+        <ul class="points">
+            <li><b>外链（推荐）</b>：<code>&lt;link rel="stylesheet" href="styles.css"&gt;</code> —— 复用性最好。</li>
+            <li><b>内嵌</b>：页面的 <code>&lt;style&gt;</code> 中写规则 —— 只影响当前页面。</li>
+            <li><b>行内</b>：元素的 <code>style=""</code> —— 只改某一个元素，不利于维护。</li>
+        </ul>
+
+        <div class="playground"
+             data-title="HowTo: 三种引入方式（演示）"
+             data-init-html="&lt;!-- 模拟：页面里直接写 &lt;style&gt; --&gt;
+&lt;style&gt;.note{ color:black; background: lightgray; padding:8px; border-radius:6px; }&lt;/style&gt;
+
+&lt;h3&gt;外链：&lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;&lt;/h3&gt;
+&lt;p class=&quot;note&quot;&gt;我是内嵌样式控制的段落。&lt;/p&gt;
+&lt;p style=&quot;color:red;font-weight:bold&quot;&gt;我是行内样式，只影响我自己。&lt;/p&gt;"
+             data-init-css="/* 如果是外链，就把这些写在 styles.css 里 */
+h3{ color: green }">
+        </div>
+
+        <div class="tasks">
+            <div class="task">
+                <span class="task-badge">任务</span>
+                调大 <code>.note</code> 的圆角，并给它加一条 <b>lightgray</b> 边框（编辑器里改 CSS）。<br>
+                <em>要求：</em> 颜色用命名色（<code>lightgray</code>），不要用十六进制。
+                <div class="ans-bar">
+                    <button class="ans-btn" data-ans-target="#ans-howto">显示答案</button>
+                </div>
+                <div class="ans-panel" id="ans-howto">
+<pre><code>.note{
+  border: 1px solid lightgray;
+  border-radius: 12px;
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 语法 -->
+    <section id="syntax" class="card">
+        <h2>CSS 语法：选择器 + 声明块</h2>
+        <p>一条规则由<strong>选择器</strong>和<strong>声明块</strong>组成：<code>p { color: white; background: purple; }</code>。</p>
+
+        <div class="playground"
+             data-title="Syntax: 规则结构"
+             data-init-html="&lt;p&gt;我会变成白字，紫色底。&lt;/p&gt;"
+             data-init-css="p{
+  color: white;
+  background: purple;
+  padding: 8px;
+  border-radius: 6px;
+}">
+        </div>
+    </section>
+
+    <!-- 3. 选择器 -->
+    <section id="selectors" class="card">
+        <h2>选择器（基础到进阶）</h2>
+        <p>基础：通配（*）、标签（p）、类（.note）、ID（#title）、分组（h1, h2）。进阶：关系（后代/子代/兄弟）、伪类（:hover）、伪元素（::first-line）。</p>
+
+        <div class="grid">
+            <div class="code"><header>示例（只读）</header>
+                <pre><code>/* 标签 */        p{ color: black }
+/* 类 */          .note{ background: lightyellow }
+/* ID */          #title{ color: purple }
+/* 分组 */        h1, h2{ font-family:Arial, Helvetica, sans-serif }
+/* 关系/伪类 */   .card p strong{ color: red }  a:hover{ text-decoration: underline }</code></pre></div>
+            <div class="demo"><header>小任务</header>
+                <div class="preview">
+                    <ul class="points">
+                        <li>让 <code>.note</code> 段落背景变成 <b>lightyellow</b>。</li>
+                        <li>让 <code>.card p strong</code> 只在卡片内变 <b>red</b>。</li>
+                        <li><em>要求：</em> 颜色仅用命名色。</li>
+                    </ul>
+                    <div class="ans-bar">
+                        <button class="ans-btn" data-ans-target="#ans-selectors">显示答案</button>
+                    </div>
+                    <div class="ans-panel" id="ans-selectors">
+<pre><code>.note { background: lightyellow; }
+.card p strong { color: red; }</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 颜色与单位 -->
+    <section id="colors-units" class="card">
+        <h2>颜色与单位（命名色 + px/%/em/rem/vw/vh）</h2>
+        <p>此处练习用命名色；单位用相对单位体会响应式。</p>
+
+        <div class="playground"
+             data-title="Colors & Units: 响应式盒子（命名色）"
+             data-init-html="&lt;div class='box'&gt;缩放窗口看看我&lt;/div&gt;"
+             data-init-css=".box{
+  width: 60vw;
+  padding: 1rem;
+  background: lightyellow;
+  border: 2px solid purple;
+  color: black;
+  border-radius: 12px;
+}">
+        </div>
+    </section>
+
+    <!-- 5. 文字与字体 -->
+    <section id="text-font" class="card">
+        <h2>文字与字体（font-family / size / weight / line-height / letter-spacing）</h2>
+        <p>通过字体族、字号、行高、粗细、字距等让文字更易读。</p>
+
+        <div class="playground"
+             data-title="Text & Font: 排版调优"
+             data-init-html="&lt;h3&gt;易读排版&lt;/h3&gt;
+&lt;p&gt;请调整font-size、line-height、letter-spacing，让段落更舒服。&lt;/p&gt;"
+             data-init-css="h3{ font-family: ui-sans-serif, system-ui; color: black; }
+p{
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: 0.2px;
+}">
+        </div>
+    </section>
+
+    <!-- 6. 间距 -->
+    <section id="spacing" class="card">
+        <h2>间距（margin / padding）与简写</h2>
+        <p><code>margin: 上 右 下 左;</code>；两值/三值/四值的简写要掌握；<code>padding</code> 同理。</p>
+        <div class="tasks">
+            <div class="task">
+                <span class="task-badge">任务</span>
+                用一条简写把
+                <code>margin-top:20px; margin-bottom:12px; margin-left:8px; margin-right:8px;</code> 合并。
+                <div class="ans-bar">
+                    <button class="ans-btn" data-ans-target="#ans-spacing">显示答案</button>
+                </div>
+                <div class="ans-panel" id="ans-spacing">
+<pre><code>/* 上 | 左右 | 下 */
+margin: 20px 8px 12px;</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 边框与背景 -->
+    <section id="border-bg" class="card">
+        <h2>边框与背景（border / border-radius / background）</h2>
+        <p>边框粗细、样式、颜色，圆角与背景色/图像都很常用。</p>
+
+        <div class="playground"
+             data-title="Border & Background（命名色）"
+             data-init-html="&lt;div class='cardy'&gt;给我加边框和圆角吧&lt;/div&gt;"
+             data-init-css=".cardy{
+  padding: 12px;
+  background: lightgray;
+  border: 2px solid green;
+  border-radius: 12px;
+}">
+        </div>
+    </section>
+
+    <!-- 8. 盒模型 -->
+    <section id="box-model" class="card">
+        <h2>盒模型（content + padding + border + margin）</h2>
+        <p>推荐 <code>box-sizing: border-box;</code>，计算更直观。</p>
+
+        <div class="playground"
+             data-title="Box Model"
+             data-init-html="&lt;div class='item'&gt;&lt;strong&gt;盒模型&lt;/strong&gt;&lt;br&gt;看 padding / border / margin 的效果&lt;/div&gt;"
+             data-init-css="*, *::before, *::after{ box-sizing: border-box; }
+.item{
+  width:260px;
+  margin:16px;
+  padding:12px;
+  border:4px solid purple;
+  background: lightyellow;
+}">
+        </div>
+    </section>
+
+    <!-- 9. 显示与定位 -->
+    <section id="display-position" class="card">
+        <h2>显示与定位（display / position / z-index / overflow）</h2>
+        <p><b>display</b>：block / inline / inline-block / none；<b>position</b>：static / relative / absolute / fixed / sticky。</p>
+
+        <div class="playground"
+             data-title="Display & Position"
+             data-init-html="&lt;div class='wrap'&gt;
+  &lt;div class='boxA'&gt;A&lt;/div&gt;
+  &lt;div class='boxB'&gt;B (z-index 2)&lt;/div&gt;
+&lt;/div&gt;"
+             data-init-css=".wrap{ position:relative; height:120px; background: lightgray; }
+.boxA{ position:absolute; left:10px; top:10px; background: lightyellow; padding:8px }
+.boxB{ position:absolute; left:40px; top:40px; background: yellow; padding:8px; z-index:2 }">
+        </div>
+    </section>
+
+    <!-- 10. Flex -->
+    <section id="flex" class="card">
+        <h2>Flex 布局（现代首选的一维布局）</h2>
+        <p>主轴方向（row/column）、对齐（justify-content / align-items）、换行（flex-wrap）、伸缩（flex）。</p>
+
+        <div class="playground"
+             data-title="Flex Layout"
+             data-init-html="&lt;div class='row'&gt;&lt;div&gt;A&lt;/div&gt;&lt;div&gt;B&lt;/div&gt;&lt;div&gt;C&lt;/div&gt;&lt;/div&gt;"
+             data-init-css=".row{
+  display:flex;
+  gap:12px;
+  justify-content:space-between;
+  align-items:center;
+}
+.row > div{
+  flex:1;
+  padding:12px;
+  background: lightgray;
+  border:1px solid gray;
+  border-radius:10px;
+}">
+        </div>
+
+        <div class="tasks">
+            <div class="task">
+                <span class="task-badge">任务</span>
+                把布局改成 <code>column</code>，并让中间那张卡片 <code>flex: 2</code>（更大）。
+                <div class="ans-bar">
+                    <button class="ans-btn" data-ans-target="#ans-flex">显示答案</button>
+                </div>
+                <div class="ans-panel" id="ans-flex">
+<pre><code>.row { flex-direction: column; }
+.row > div:nth-child(2) { flex: 2; }</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. 级联与优先级 -->
+    <section id="cascade" class="card">
+        <h2>级联（Cascade）与优先级（Specificity）</h2>
+        <p>一般规则：<code>行内 &gt; #id &gt; .class &gt; 标签</code>；后写覆盖先写；<code>!important</code> 最高（慎用）。</p>
+
+        <div class="playground"
+             data-title="Cascade & Specificity"
+             data-init-html="&lt;p id='emph' class='note' style='color:orange'&gt;我会是什么颜色？&lt;/p&gt;"
+             data-init-css="p{ color: green }
+.note{ color: blue }
+#emph{ color: red }">
+        </div>
+
+        <div class="tasks">
+            <div class="task">
+                <span class="task-badge">任务</span>
+                删除示例中 <code>style="color:orange"</code> 的行内样式，再给 <code>p</code> 加 <code>!important</code>，比较谁赢。
+                <div class="ans-bar">
+                    <button class="ans-btn" data-ans-target="#ans-cascade">显示答案</button>
+                </div>
+                <div class="ans-panel" id="ans-cascade">
+<pre><code>/* 删除行内后，ID 更高 → red */
+p{ color: green }
+.note{ color: blue }
+#emph{ color: red }
+
+/* 若再将 p 提升： */
+p{ color: green !important }
+/* 则 p 胜出（不建议滥用 !important） */</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. 继承 -->
+    <section id="inherit" class="card">
+        <h2>继承（Inheritance）</h2>
+        <p>颜色/字体会继承；尺寸/边框/外边距等不继承。可用 <code>inherit</code> / <code>initial</code> / <code>revert</code> 控制。</p>
+
+        <div class="playground"
+             data-title="Inheritance"
+             data-init-html="&lt;div class='parent'&gt;父元素设置了文字颜色与字体
+  &lt;div class='child'&gt;子元素会继承文字相关样式&lt;/div&gt;
+&lt;/div&gt;"
+             data-init-css=".parent{ color: black; font-family:Arial, Helvetica, sans-serif }
+.child{ padding:6px; border:1px dashed gray }">
+        </div>
+    </section>
+
+    <!-- 参考 -->
+    <section class="card">
+        <h2>其他的学习网站</h2>
+        <ul class="res-list">
+            <li><div class="res-name">W3Schools: CSS Introduction</div><a class="btn" target="_blank" rel="noreferrer" href="https://www.w3schools.com/css/css_intro.asp">打开</a></li>
+            <li><div class="res-name">W3C CSS Validator</div><a class="btn" target="_blank" rel="noreferrer" href="https://jigsaw.w3.org/css-validator/">打开</a></li>
+            <li><div class="res-name">MDN: CSS 指南与参考</div><a class="btn" target="_blank" rel="noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/CSS">打开</a></li>
+        </ul>
+    </section>
+
+    <footer>
+        © CS5063 Week 2 — 学习演示页面 • By Xunjie
+        <div style="margin-top:8px"><a class="btn" href="#top">回到顶部</a></div>
+    </footer>
+</main>
+
+<!-- 复用 Week1 主题/导航脚本 -->
+<script src="/Week1.js"></script>
+<!-- Week2 内嵌编辑器 + 自动完成 + 答案按钮 -->
+<script src="/Week2.js"></script>
+</body>
+</html>
